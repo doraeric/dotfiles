@@ -1,0 +1,161 @@
+" =============== Vundle (for vim plugin) ===============
+set nocompatible              " be iMproved, required
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+Plugin 'Valloric/YouCompleteMe'
+" YCM is a plugin with a compiled component.
+" If update using Vundle, remember to recompile it.
+" cd ~/.vim/bundle/YouCompleteMe && ./install.py --clang-completer
+Plugin 'godlygeek/tabular'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'guiniol/molokai'
+Plugin 'whatyouhide/vim-gotham' " a blue color scheme
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-fugitive' " git plugin
+Plugin 'bling/vim-bufferline'
+Plugin 'SirVer/ultisnips'   " Track the engine.
+Plugin 'honza/vim-snippets' " Snippets are separated from the engine.
+Plugin 'pangloss/vim-javascript'
+Plugin 'wakatime/vim-wakatime'
+" Plugin 'guns/xterm-color-table.vim' " :XtermColorTable
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" ========== Put your non-Plugin stuff after this line ==========
+
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-h> <C-w>h
+map <C-l> <C-w>l
+map + <C-W>+
+map - <C-W>-
+map <Right>  <C-w>>
+map <Left>  <C-w><
+" Allow saving of files as sudo when I forgot to start vim with sudo.
+cmap w!! w !sudo tee > /dev/null %
+cmap ebig5 e ++enc=big5
+" copy & paste to system clipboard
+nmap ,p "+p
+nmap ,P "+P
+vmap ,y "+y
+nmap ,y "+y
+
+set splitbelow splitright
+set number relativenumber
+set ai
+set hlsearch
+set foldmethod=syntax
+set foldlevelstart=99  " not fold when open file
+" Indent settings
+set expandtab     " insert spaces rather than a tab when press <TAB>
+set tabstop=4     " how many spaces does a real '\t' char look like
+set softtabstop=4 " how many spaces does the final indent look, affects <TAB>, <BS> and <DEL>
+set shiftwidth=4  " move n columns when type `>>`
+autocmd FileType html setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+
+map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+" some setting from $VIMERUNTIME/defaults.vim
+set history=200      " keep 200 lines of command line history
+set showcmd          " display incomplete commands
+set wildmenu         " display completion matches in a status line
+set ttimeout         " time out for key codes
+set ttimeoutlen=100  " wait up to 100ms after Esc for special key
+set display=truncate " Show @@@ in the last line if it is truncated.
+set scrolloff=3
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+" Revert with ":iunmap <C-U>".
+inoremap <C-U> <C-G>u<C-U>
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  filetype plugin indent on
+  augroup vimStartup
+    au!
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid, when inside an event handler
+    " (happens when dropping a file on gvim) and for a commit message (it's
+    " likely a different one than last time).
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
+  augroup END
+endif " has("autocmd")
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+    \ | wincmd p | diffthis
+endif
+
+let g:is_posix = 1 " correct highlight for bash
+
+" Color
+syntax enable
+set t_Co=256
+let g:jellybeans_overrides = {
+\    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
+\}
+colorscheme jellybeans
+" colorscheme Tomorrow-Night-Eighties
+" let g:molokai_transparent = 1 | colorscheme molokai
+" colorscheme gotham256
+" hi StatusLine cterm=bold ctermfg=16 ctermbg=15
+" hi StatusLineNC cterm=none ctermfg=16 ctermbg=8
+
+" set rulerformat=%70(%F\ %=%{''.(&fenc!=''?&fenc:&enc).''}/%{&ff}%6l,%3c%4p%%\ \ %r%6P%)
+" "                   ^            ^                       ^^     ^    ^   ^      ^          %6P
+" "                   ~/.vim/vimrc utf-8                   /unix  line,col line% read-only  view%
+
+" Plugins command---------
+map <f10> :Tlist<CR>
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+let g:ycm_python_binary_path = 'python3'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" vim-airline plugin settings
+let g:airline_powerline_fonts = 1
+set laststatus=2
+" let g:airline_theme='murmur' " not good in unfocus pane
+" let g:airline_theme='term' " good in unfocus pane
+let g:airline_theme='jellybeans' " all colors are ok
+" let g:airline_theme='badwolf' " all colors are ok
+let g:airline_section_z = airline#section#create(['%3p%%', 'linenr', 'maxlinenr', ' :%3c'])
+let g:airline_symbols.linenr = ' ' " '
+" %p     %l            %c
+" line%  line-number   col-number
+" let g:airline#extensions#default#layout = [
+"   \ [ 'a', 'b', 'c' ],
+"   \ [ 'x', 'y', 'z', 'error', 'warning' ]
+"   \ ]
+let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tabline#show_splits = 1 "enable/disable displaying open splits per tab (only when tabs are opened). >
+let g:airline#extensions#tabline#show_buffers = 1 " enable/disable displaying buffers with a single tab
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+
+" Plugin 'haya14busa/incsearch.vim'
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)

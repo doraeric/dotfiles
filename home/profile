@@ -1,0 +1,45 @@
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+#umask 022
+
+# If work on workstation, you may not have root permission, so you
+# cannot run `chsh`, change the default shell from .profile
+# I think some software work according to /etc/passwd because changing
+# $SHELL doesn't work as expect
+# NOTE: $TERM value xterm changes to xterm-256color in bashrc and zshrc,
+# so commands start from dash are 8 colors
+if [ "`basename $SHELL`" = "sh" ]; then
+    preferred=
+    if [ -x /usr/bin/zsh ]; then
+        preferred=/usr/bin/zsh
+    elif [ -x /bin/bash ]; then
+        preferred=/bin/bash
+    fi
+    if [ -n "$preferred" ] && [ "`basename $preferred`" != "sh" ]; then
+        SHELL=$preferred;
+        case $- in
+            *i*) exec $preferred -l;;
+        esac
+    fi
+fi
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+    fi
+fi
+
+# set PATH so it includes user's private bin directories
+PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+# "~/.local" is a bug, the bug is the reason Ubuntu 16.04
+# had ~/.local in the path and Ubuntu 17.04 did not.
+# Run `systemd-path user-binaries` to check
+# Maybe remove it in the future?

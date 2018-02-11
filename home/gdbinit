@@ -1,0 +1,3 @@
+source ~/.gdb-dashboard
+dashboard -layout !assembly expressions history memory !registers source stack threads
+set history save off
