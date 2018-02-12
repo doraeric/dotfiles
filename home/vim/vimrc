@@ -12,8 +12,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'godlygeek/tabular'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'nanotech/jellybeans.vim'
-Plugin 'guiniol/molokai'
-Plugin 'whatyouhide/vim-gotham' " a blue color scheme
+" Plugin 'guiniol/molokai'
+" Plugin 'whatyouhide/vim-gotham' " a blue color scheme
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
