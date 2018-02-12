@@ -75,7 +75,9 @@ set showcmd          " display incomplete commands
 set wildmenu         " display completion matches in a status line
 set ttimeout         " time out for key codes
 set ttimeoutlen=100  " wait up to 100ms after Esc for special key
-set display=truncate " Show @@@ in the last line if it is truncated.
+if has('patch-7.4.2295')
+    set display=truncate " Show @@@ in the last line if it is truncated.
+endif
 set scrolloff=3
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
