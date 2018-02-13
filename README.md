@@ -1,6 +1,28 @@
 # My dotfiles
+## Installation
+1. Install all requirement first
 
-Run `./install.sh` to link scripts
+   `sudo apt-get install -y zsh tmux xsel`
+
+   `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && rm ~/.zshrc; git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm; git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
+
+2. Download and link the scripts
+
+   `git clone https://github.com/doraeric/dotfiles.git ~/dotfiles; cd ~/dotfiles; ./install.sh`
+
+3. `vi ~/.vim/vimrc` to check what plugin to install
+
+4. Install plugins
+
+   `~/.tmux/plugins/tpm/scripts/install_plugins.sh; vim +PluginInstall +qall`
+
+5. (optional) Compile vim plugin YouCompleteMe
+
+   `sudo apt-get install build-essential cmake; cd ~/.vim/bundle/YouCompleteMe; ./install.py --clang-completer`
+
+6. (optional) Load local setting
+
+   `git clone https://github.com/doraeric/dotfiles.local.git ~/dotfiles/home.local; cd ~/dotfiles; ./install.sh`
 
 ## Other settings
 ### 16 Colors for Terminal Emulator
