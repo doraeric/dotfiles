@@ -14,7 +14,7 @@
 
 4. Install plugins
 
-   `~/.tmux/plugins/tpm/scripts/install_plugins.sh; vim +PluginInstall +qall`
+   `~/.tmux/plugins/tpm/scripts/install_plugins.sh; vim +PluginInstall +qall; [ -n "$ZSH_CUSTOM" ] || ZSH_CUSTOM=~/.oh-my-zsh/custom; git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions`
 
 5. (optional) Compile vim plugin YouCompleteMe
 
@@ -44,6 +44,10 @@ sudo cp /etc/fstab /etc/fstab.bak
 sudo vi /etc/fstab
 ```
 `UUID=XXX /media/Data ntfs-3g uid=1000,gid=1000,umask=0002 0 0`
+
+exFAT
+
+`sudo apt-get install exfat-fuse exfat-utils`
 
 [fstab guide](http://www.linuxstall.com/fstab/),
 [ntfs-3g](https://wiki.archlinux.org/index.php/NTFS-3G#Configuring),
