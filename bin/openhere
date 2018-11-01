@@ -1,0 +1,3 @@
+#!/bin/sh
+# sh -c 'nautilus . >/dev/null 2>&1 &'
+nautilus . >/dev/null 2>&1 &
