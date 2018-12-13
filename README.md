@@ -62,9 +62,3 @@ Section "InputClass"
 EndSection
 ```
 "TapButton2" "2" means: "two-finger tap" "mouse middle click"
-
-### NTU VPN
-[Installation](http://ccnet.ntu.edu.tw/vpn/for-ubuntu.html)
-
-Append `--fg` to `$HOME/.local/share/applications/ms-jnc.desktop` if installed,
-otherwise some functions won't work.
