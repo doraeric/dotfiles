@@ -53,7 +53,20 @@ exFAT
 [ntfs-3g](https://wiki.archlinux.org/index.php/NTFS-3G#Configuring),
 [/mnt vs /media](https://askubuntu.com/questions/22215/why-have-both-mnt-and-media)
 
-### Synaptics touchpad
+### Touchpad Settings
+Enable touchpad while using keyboard
+
+```
+# This command shows settings about touchpad
+gsettings list-recursively org.gnome.desktop.peripherals.touchpad
+
+# This command enable touchpad while typing
+gsettings set org.gnome.desktop.peripherals.touchpad disable-while-typing false
+```
+
+For gestures, use [libinput-gestures](https://github.com/bulletmark/libinput-gestures)
+
+#### Synaptics touchpad (Ubuntu 16.04)
 `sudo vi /usr/share/X11/xorg.conf.d/50-synaptics.conf`
 ```
 Section "InputClass"
@@ -62,3 +75,30 @@ Section "InputClass"
 EndSection
 ```
 "TapButton2" "2" means: "two-finger tap" "mouse middle click"
+
+### Grub
+Grub setting file is `/etc/default/grub`, run `sudo update-grub` after changing it.
+
+To get supported resolution, press `c` to enter console mode in grub menu and type
+```
+# Ubuntu before 18.04
+vbeinfo
+
+# Ubuntu 18.04 and after
+videoinfo
+```
+
+```
+# /etc/default/grub
+# change resolution
+GRUB_GFXMODE=640x480 # or other supported value
+
+# remember last choice for dual boot
+GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true
+```
+
+### Dual boot
+Time setting, keep windows and linux correct at the same time
+
+`timedatectl set-local-rtc 1 --adjust-system-clock`
