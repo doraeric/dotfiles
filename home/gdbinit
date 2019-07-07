@@ -1,3 +1,9 @@
-source ~/.gdb-dashboard
-dashboard -layout !assembly expressions history memory !registers source stack threads
-set history save off
+python
+import os
+if "GDB" in os.environ and "dashboard" == os.environ["GDB"]:
+    gdb.execute('source ~/.gdb-dashboard')
+    gdb.execute('dashboard -layout !assembly expressions history memory !registers source stack threads')
+    gdb.execute('set history save off')
+else:
+    gdb.execute('source ~/peda/peda.py')
+end
