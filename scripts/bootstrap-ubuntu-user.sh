@@ -37,7 +37,7 @@ containsElement () {
 if (( ${#PACKAGES[@]} )); then
     for key in "${!TO_INSTALL[@]}"; do
         if ! containsElement "$key" "${PACKAGES[@]}"; then
-            unset 'TO_INSTALL["$key"]'
+            unset 'TO_INSTALL[$key]'
         fi
     done
 fi
