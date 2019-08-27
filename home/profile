@@ -9,24 +9,14 @@
 #umask 022
 
 # If work on workstation, you may not have root permission, so you
-# cannot run `chsh`, change the default shell from .profile
+# cannot install new shells to system. Change the default shell from .profile
 # I think some software work according to /etc/passwd because changing
 # $SHELL doesn't work as expect
-# NOTE: $TERM value xterm changes to xterm-256color in bashrc and zshrc,
-# so commands start from dash are 8 colors
-if [ "`basename $SHELL`" = "sh" ]; then
-    preferred=
-    if [ -x /usr/bin/zsh ]; then
-        preferred=/usr/bin/zsh
-    elif [ -x /bin/bash ]; then
-        preferred=/bin/bash
-    fi
-    if [ -n "$preferred" ] && [ "`basename $preferred`" != "sh" ]; then
-        SHELL=$preferred;
-        case $- in
-            *i*) exec $preferred -l;;
-        esac
-    fi
+PROFILE_SHELL=
+
+if [ -x "$PROFILE_SHELL" -a "${PROFILE_SHELL_CHECKED:=FALSE}" = "FALSE" ]; then
+    export SHELL=$PROFILE_SHELL
+    PROFILE_SHELL_CHECKED=TRUE exec $PROFILE_SHELL -l
 fi
 
 # if running bash
