@@ -13,11 +13,16 @@
 # I think some software work according to /etc/passwd because changing
 # $SHELL doesn't work as expect
 PROFILE_SHELL=
-
 if [ -x "$PROFILE_SHELL" -a "${PROFILE_SHELL_CHECKED:=FALSE}" = "FALSE" ]; then
     export SHELL=$PROFILE_SHELL
     PROFILE_SHELL_CHECKED=TRUE exec $PROFILE_SHELL -l
 fi
+
+# Environment variables can be set in .pam_environment,
+# but most linux distros use outdated pam
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
