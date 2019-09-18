@@ -18,7 +18,7 @@ if dein#load_state(expand('$XDG_CONFIG_HOME/nvim/dein'))
   call dein#add('wsdjeg/dein-ui.vim')
   call dein#add('nanotech/jellybeans.vim', {'hook_add': "colo jellybeans | let g:jellybeans_overrides = {'background': { 'ctermbg': 'none', '256ctermbg': 'none' }}"})
   call dein#add('vim-airline/vim-airline')
-  call dein#add('bling/vim-bufferline')
+  call dein#add('bling/vim-bufferline', {'hook_add': "let g:bufferline_echo=0"})
   call dein#add('christoomey/vim-tmux-navigator')
   call dein#add('tpope/vim-surround')
   call dein#add('godlygeek/tabular')
@@ -113,7 +113,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
 " let g:ycm_key_invoke_completion = '<c-k>'
 " [auto-complete without <c-space>](https://github.com/ycm-core/YouCompleteMe/issues/2817)
-let g:ycm_semantic_triggers = { 'c': [ 're!\w{3}' ], 'cpp': [ 're!\w{3}' ] }
+" let g:ycm_semantic_triggers = { 'c': [ 're!\w{3}' ], 'cpp': [ 're!\w{3}' ] }
 
 " neovim wiki says t_Co has no effect, but :let &t_Co=8 do change the variable
 " Plugin 'haya14busa/incsearch.vim'
@@ -124,3 +124,6 @@ autocmd FileType html setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript.jsx setlocal ts=2 sts=2 sw=2
 cmap ebig5 e ++enc=big5
 let g:is_posix=1
+
+" c++ https://stackoverflow.com/questions/28217118/vim-indents-c-c-functions-badly-when-the-type-and-name-are-in-different-lines
+set cino+=t0
