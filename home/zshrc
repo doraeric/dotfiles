@@ -62,6 +62,7 @@ ZSH_THEME="bullet-train"
 plugins=(
   git
   zsh-autosuggestions
+  docker
   docker-compose
 )
 
@@ -131,28 +132,39 @@ TIMEFMT=$'\nreal\t%*Es\tcpu\t%P\nuser\t%*Us\tsys\t%*Ss'
 if command -v python3 2>&1 >/dev/null; then
     export VIRTUALENVWRAPPER_PYTHON=$(command -v python3)
 fi
-_vw=
-if [ -r "$HOME/.local/bin/virtualenvwrapper.sh" ] # pip install --user
-then _vw="$HOME/.local/bin/virtualenvwrapper.sh"
-elif [ -r "/usr/share/virtualenvwrapper/virtualenvwrapper.sh" ] # apt-get install
-then _vw="/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
-elif [ -r /usr/local/bin/virtualenvwrapper.sh ] # sudo pip install
-then _vw=/usr/local/bin/virtualenvwrapper.sh
-elif [ -r /usr/bin/virtualenvwrapper.sh ]
-then _vw=/usr/bin/virtualenvwrapper.sh
-elif which virtualenvwrapper.sh 1>/dev/null
-then _vw="`which virtualenvwrapper.sh`"
-fi
-if [ -n "$_vw" ]; then
-    function workon {
-        source "$_vw"
-        workon $@
-    }
-    _load_virtu() {
-        source "$_vw"
-        reply=(`workon`)
-    }
-    compctl -K _load_virtu workon
-fi
+source `command -v virtualenvwrapper_lazy.sh`
+# _vw=
+# if [ -r "$HOME/.local/bin/virtualenvwrapper.sh" ] # pip install --user
+# then _vw="$HOME/.local/bin/virtualenvwrapper.sh"
+# elif [ -r "/usr/share/virtualenvwrapper/virtualenvwrapper.sh" ] # apt-get install
+# then _vw="/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
+# elif [ -r /usr/local/bin/virtualenvwrapper.sh ] # sudo pip install
+# then _vw=/usr/local/bin/virtualenvwrapper.sh
+# elif [ -r /usr/bin/virtualenvwrapper.sh ]
+# then _vw=/usr/bin/virtualenvwrapper.sh
+# elif which virtualenvwrapper.sh 1>/dev/null
+# then _vw="`which virtualenvwrapper.sh`"
+# fi
+# if [ -n "$_vw" ]; then
+#     function workon {
+#         source "$_vw"
+#         workon $@
+#     }
+#     _load_virtu() {
+#         source "$_vw"
+#         reply=(`workon`)
+#     }
+#     compctl -K _load_virtu workon
+# fi
+
+# https://gnunn1.github.io/tilix-web/manual/vteconfig/
+. /etc/profile.d/vte-2.91.sh
+
+# oh-my-zsh change LESS in  ~/.oh-my-zsh/lib/misc.zsh
+# https://stackoverflow.com/questions/37187501
+# above less version 530, use "-R" is fine
+# below the version, use smartless as alternative
+# default git LESS:
+# export LESS="-FRX"
 
 if [ -f ~/.zshrc.local ]; then source ~/.zshrc.local; fi
