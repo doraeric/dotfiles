@@ -34,11 +34,16 @@ if dein#load_state(expand('$XDG_CONFIG_HOME/nvim/dein'))
   " call dein#add('wakatime/vim-wakatime', {'hook_add': 'let $WAKATIME_HOME = $XDG_CONFIG_HOME."/wakatime"', 'build': 'mkdir -p "$XDG_CONFIG_HOME/wakatime"'})
   " web plugins
   " call dein#add('pangloss/vim-javascript')
-  " call dein#add('mxw/vim-jsx')
+  " call dein#add('mxw/vim-jsx') " strange auto re indent behaviour when insert to js file
+  " call dein#add('posva/vim-vue')
   " call dein#add('mattn/emmet-vim')
   " call dein#add('othree/html5.vim')
   " test environment
   " call dein#add('guns/xterm-color-table.vim') " :XtermColorTable
+  " call dein#add('vim-syntastic/syntastic')
+  call dein#add('google/vim-maktaba', {'merged' : 0})
+  call dein#add('google/vim-codefmt', {'merged' : 0})
+  call dein#add('google/vim-glaive', {'merged' : 0})
 
   " Required:
   call dein#end()
@@ -47,7 +52,10 @@ endif
 " common functions
 " call dein#build()
 " call dein#install()
+" https://github.com/Shougo/dein.vim/issues/71
+" call dein#recache_runtimepath()
 " DeinUpdate
+call glaive#Install()
 
 " Required:
 filetype plugin indent on
@@ -59,6 +67,7 @@ syntax enable
 "endif
 
 "End dein Scripts-------------------------
+let g:loaded_python_provider = 1
 
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -120,10 +129,35 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
-autocmd FileType html setlocal ts=2 sts=2 sw=2
-autocmd FileType javascript.jsx setlocal ts=2 sts=2 sw=2
+au BufNewFile,BufRead *.mjs set filetype=javascript
+autocmd FileType html,javascript,javascript.jsx setlocal ts=2 sts=2 sw=2
 cmap ebig5 e ++enc=big5
 let g:is_posix=1
 
 " c++ https://stackoverflow.com/questions/28217118/vim-indents-c-c-functions-badly-when-the-type-and-name-are-in-different-lines
-set cino+=t0
+" set cino+=t0
+" https://www.systutorials.com/how-to-make-vim-indent-c11-lambdas-correctly/
+" https://github.com/zma/vim-config/blob/master/.vimrc
+setlocal cino+=g-1,j1,(0,ws,Ws,N+s,t0,g0,+0
+
+" template
+if has("autocmd")
+  augroup templates
+    autocmd BufNewFile CMakeLists.txt 0r ~/.config/nvim/templates/CMakeLists.txt
+  augroup END
+endif
+
+" https://wiki.josephhyatt.com/dotfiles/.vimrc
+" google format
+augroup autoformat_settings
+  " sudo apt install clang-format
+  " autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
+  if executable("clang-format")
+    autocmd FileType c,cpp,proto setlocal equalprg=clang-format\ -style=google
+  endif
+  autocmd Filetype c,cpp setlocal ts=2 sw=2 expandtab
+  " autocmd FileType python AutoFormatBuffer yapf
+augroup END
+" use google style for clang-format
+" call :FormatCode when editing
+Glaive codefmt clang_format_style='google'

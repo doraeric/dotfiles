@@ -92,11 +92,41 @@ def GetProgramInclude(filename):
             local_flags.append(e)
         flags = flags + local_flags
 
+def conanfile():
+    from pathlib import Path
+    local_flags = []
+    if Path('conanfile.txt').exists():
+        with Path('conanfile.txt').open() as f:
+            section = ''
+            sections = []
+            for line in f:
+                line = line.strip().rstrip()
+                if line.startswith('['):
+                    section = line
+                    sections.append(section)
+                    continue
+                if line == '' or line.startswith('#'):
+                    continue
+                if section != '[requires]':
+                    if '[requires]' in sections:
+                        break
+                    else:
+                        continue
+                package_path = Path(Path.home(), '.conan', 'data', *line.split('/'), '_', '_', 'package').glob('*')
+                package_path = list(package_path)
+                if len(package_path) == 0:
+                    continue
+                package_path = package_path[0]
+                local_flags.append('-isystem')
+                local_flags.append(str(Path(package_path, 'include')))
+    return local_flags
+flags += conanfile()
+
 # Clang automatically sets the '-std=' flag to 'c++14' for MSVC 2015 or later,
 # which is required for compiling the standard library, and to 'c++11' for older
 # versions.
 if platform.system() != 'Windows':
-  flags.append( '-std=c++11' )
+  flags.append('-std=c++14')
 
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
