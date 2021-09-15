@@ -39,3 +39,16 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 # Run `systemd-path user-binaries` to check
 # Maybe remove it in the future?
 export LD_LIBRARY_PATH="${HOME}/.local/lib:${LD_LIBRARY_PATH}"
+export DOT_PROFILE=LOADED
+
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+if [ -e "/home/doraeric/.local/share/cargo/env" ]; then
+    source "/home/doraeric/.local/share/cargo/env"
+fi
+
+# firefox
+# pixel scrolling
+# https://askubuntu.com/questions/1148934/precise-scrolling-in-firefox
+# https://www.reddit.com/r/openSUSE/comments/62o6ch/firefox_pixelbypixel_twofinger_scrolling/
+export MOZ_USE_XINPUT2=1
