@@ -1,9 +1,79 @@
+# https://stackoverflow.com/questions/21628002/counting-machine-instructions-using-gdb
+# disable any other settings, or it will be slow!! `export GDB=WHATEVER`
+# remember to disable page in gdb, `set pagination off`
+define do_count
+set $count=0
+while ($pc != $arg0)
+stepi
+set $count=$count+1
+end
+print $count
+end
+
 python
 import os
-if "GDB" in os.environ and "dashboard" == os.environ["GDB"]:
-    gdb.execute('source ~/.gdb-dashboard')
-    gdb.execute('dashboard -layout !assembly expressions history memory !registers source stack threads')
-    gdb.execute('set history save off')
+if "GDB" in os.environ:
+    if "dashboard" == os.environ["GDB"]:
+        gdb.execute('source ~/.gdb-dashboard')
+        gdb.execute('dashboard -layout !assembly expressions history memory !registers source stack threads')
+        gdb.execute('set history save off')
+    elif "peda" == os.environ["GDB"]:
+        gdb.execute('source ~/.config/gdb/longld_peda/peda.py')
+    elif 'pwndbg' == os.environ["GDB"]:
+        import sys
+        sys.path.insert(0, "/home/doraeric/.virtualenvs/ctf/lib/python3.6/site-packages")
+        gdb.execute('source ~/.config/gdb/pwndbg_pwndbg/gdbinit.py')
 else:
-    gdb.execute('source ~/peda/peda.py')
+    gdb.execute('source ~/.config/gdb/scwuaptx_peda/peda.py')
+    gdb.execute('source ~/.config/gdb/scwuaptx_Pwngdb/pwngdb.py')
+    gdb.execute('source ~/.config/gdb/scwuaptx_Pwngdb/angelheap/gdbinit.py')
+    config.Option.set("context","source,register,code,stack")
+
+class GlibcCommand (gdb.Command):
+    "Load glibc source"
+    def __init__ (self):
+        super(GlibcCommand, self).__init__ ("glibc",
+            gdb.COMMAND_SUPPORT,
+            gdb.COMPLETE_NONE, True)
+    def invoke(self, arg, from_tty):
+        if arg == '2.23':
+            all_subdirs = '''csu assert ctype locale intl catgets math setjmp signal
+                      stdlib stdio-common libio malloc string wcsmbs time dirent
+                      grp pwd posix io termios resource misc socket sysvipc gmon
+                      gnulib iconv iconvdata wctype manual shadow gshadow po argp
+                      crypt localedata timezone rt conform debug mathvec
+                      dlfcn elf'''.split()
+            dirs = ':'.join(map(lambda x: '~/.local-dbg/src/glibc-2.23/' + x, all_subdirs))
+            gdb.execute('directory ' + dirs)
+            print('load glibc source 2.23')
+        elif arg == '2.27':
+            all_subdirs = '''. csu assert ctype locale intl catgets
+                math setjmp signal stdlib stdio-common libio malloc
+                string wcsmbs time dirent grp pwd posix io termios
+                resource misc socket sysvipc gmon gnulib iconv iconvdata
+                wctype manual shadow gshadow po argp crypt localedata
+                timezone rt conform debug mathvec support dlfcn elf'''.split()
+            dirs = ':'.join(map(lambda x: '~/.local-dbg/src/glibc-2.27/' + x, all_subdirs))
+            gdb.execute('directory ' + dirs)
+            print('load glibc source 2.27')
+        else:
+            print('glibc < 2.23 | 2.27 >')
+
+GlibcCommand()
+
+if os.path.exists('/lib/x86_64-linux-gnu/libc-2.23.so'):
+    gdb.execute('glibc 2.23')
+elif os.path.exists('/lib/x86_64-linux-gnu/libc-2.27.so'):
+    gdb.execute('glibc 2.27')
+
+class TcacheAddrCommand (gdb.Command):
+    "Print tcache address"
+    def __init__ (self):
+        super(TcacheAddrCommand, self).__init__ ("tcacheaddr",
+            gdb.COMMAND_SUPPORT,
+            gdb.COMPLETE_NONE, True)
+    def invoke(self, arg, from_tty):
+        gdb.execute('python print(hex(pwndbg.heap.current._fetch_tcache_addr()))')
+TcacheAddrCommand()
 end
+# vim: filetype=python:
