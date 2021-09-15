@@ -47,6 +47,9 @@ if [ -e "/home/doraeric/.local/share/cargo/env" ]; then
     source "/home/doraeric/.local/share/cargo/env"
 fi
 
+# node js relative path
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
 # firefox
 # pixel scrolling
 # https://askubuntu.com/questions/1148934/precise-scrolling-in-firefox
