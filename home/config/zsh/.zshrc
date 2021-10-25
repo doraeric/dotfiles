@@ -2,7 +2,9 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+HISTFILE="${XDG_STATE_HOME:-$XDG_DATA_HOME}/zsh/history"
+if [[ ! -e "$(dirname $HISTFILE)" ]]; then mkdir "$(dirname $HISTFILE)"; fi
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -64,6 +66,7 @@ plugins=(
   zsh-autosuggestions
   docker
   docker-compose
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -132,7 +135,7 @@ TIMEFMT=$'\nreal\t%*Es\tcpu\t%P\nuser\t%*Us\tsys\t%*Ss'
 if command -v python3 2>&1 >/dev/null; then
     export VIRTUALENVWRAPPER_PYTHON=$(command -v python3)
 fi
-source `command -v virtualenvwrapper_lazy.sh`
+# source "`command -v virtualenvwrapper_lazy.sh`"
 # _vw=
 # if [ -r "$HOME/.local/bin/virtualenvwrapper.sh" ] # pip install --user
 # then _vw="$HOME/.local/bin/virtualenvwrapper.sh"
@@ -158,7 +161,14 @@ source `command -v virtualenvwrapper_lazy.sh`
 # fi
 
 # https://gnunn1.github.io/tilix-web/manual/vteconfig/
-. /etc/profile.d/vte-2.91.sh
+# https://unix.stackexchange.com/questions/310647/new-tab-in-bash-on-arch-linux-starts-at-home-directory
+if [[ -e /etc/profile.d/vte.sh ]]; then
+  # manjaro
+  source /etc/profile.d/vte.sh
+elif [[ -e /etc/profile.d/vte-2.91.sh ]]; then
+  # ubuntu
+  source /etc/profile.d/vte-2.91.sh
+fi
 
 # oh-my-zsh change LESS in  ~/.oh-my-zsh/lib/misc.zsh
 # https://stackoverflow.com/questions/37187501
