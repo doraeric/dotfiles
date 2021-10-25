@@ -59,3 +59,8 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # https://askubuntu.com/questions/1148934/precise-scrolling-in-firefox
 # https://www.reddit.com/r/openSUSE/comments/62o6ch/firefox_pixelbypixel_twofinger_scrolling/
 export MOZ_USE_XINPUT2=1
+
+# wakatime
+# The directory needs to be created manually, run
+# mkdir -p "$WAKATIME_HOME"
+export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
