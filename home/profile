@@ -70,3 +70,10 @@ export MOZ_USE_XINPUT2=1
 # The directory needs to be created manually, run
 # mkdir -p "$WAKATIME_HOME"
 export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
+
+# gnupg
+# The directories need to be created manually, run
+# mkdir -p "$GNUPGHOME"
+# chmod 700 "$GNUPGHOME"
+# gpgconf --create-socketdir -v
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
