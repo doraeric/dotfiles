@@ -42,6 +42,11 @@ fi
 # zsh
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
+# oh-my-zsh
+# needed before installing oh-my-zsh
+# https://github.com/ohmyzsh/ohmyzsh#custom-directory
+export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 # "~/.local" is a bug, the bug is the reason Ubuntu 16.04

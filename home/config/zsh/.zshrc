@@ -2,7 +2,9 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+# default to $XDG_DATA_HOME/oh-my-zsh if ZSH is not set
+export ZSH="${ZSH:-$XDG_DATA_HOME/oh-my-zsh}"
+
 HISTFILE="${XDG_STATE_HOME:-$XDG_DATA_HOME}/zsh/history"
 if [[ ! -e "$(dirname $HISTFILE)" ]]; then mkdir "$(dirname $HISTFILE)"; fi
 
