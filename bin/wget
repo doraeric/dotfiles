@@ -1,0 +1,8 @@
+#!/bin/bash
+# make wget follow XDG directories
+if [[ -z "$CUSTOM_WGET" ]]; then
+  export CUSTOM_WGET=1
+  # `command -p` use default PATH to search commands, looks like it's hardcoded
+  # https://askubuntu.com/questions/386629/what-are-the-default-path-values#answer-1084763
+  command -p wget --hsts-file="${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts" "$@"
+fi
