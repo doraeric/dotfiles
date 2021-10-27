@@ -5,8 +5,12 @@
 # default to $XDG_DATA_HOME/oh-my-zsh if ZSH is not set
 export ZSH="${ZSH:-$XDG_DATA_HOME/oh-my-zsh}"
 
+# XDG directories
+# https://github.com/ohmyzsh/ohmyzsh/issues/7332
 HISTFILE="${XDG_STATE_HOME:-$XDG_DATA_HOME}/zsh/history"
 if [[ ! -e "$(dirname $HISTFILE)" ]]; then mkdir "$(dirname $HISTFILE)"; fi
+if [[ ! -e "$XDG_CACHE_HOME/zsh" ]]; then mkdir "$XDG_CACHE_HOME/zsh"; fi
+ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$HOST-$ZSH_VERSION"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
