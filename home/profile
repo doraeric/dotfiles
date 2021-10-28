@@ -85,3 +85,8 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+# python, ipython, jupyter
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonstartup.py"
+export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
