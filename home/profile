@@ -56,10 +56,11 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export LD_LIBRARY_PATH="${HOME}/.local/lib:${LD_LIBRARY_PATH}"
 export DOT_PROFILE=LOADED
 
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
+# rust and cargo
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
-if [ -e "/home/doraeric/.local/share/cargo/env" ]; then
-    source "/home/doraeric/.local/share/cargo/env"
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+if [ -e "$CARGO_HOME/env" ]; then
+    source "$CARGO_HOME/env"
 fi
 
 # node js relative path
