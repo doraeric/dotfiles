@@ -84,8 +84,12 @@ plugins=(
   zsh-autosuggestions
   docker
   docker-compose
-  zsh-syntax-highlighting
 )
+if command -v rustc &> /dev/null; then plugins+=(rust); fi
+if command -v rustup &> /dev/null; then plugins+=(rustup); fi
+if command -v cargo &> /dev/null; then plugins+=(cargo); fi
+# zsh-syntax-highlighting must be at the end
+plugins+=(zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
