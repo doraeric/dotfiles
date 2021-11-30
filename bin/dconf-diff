@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+import os
+from subprocess import check_output
+import argparse
+
+ignore_list = '''
+org.gnome.totem active-plugins
+org.gnome.clocks.state.window state
+org.gnome.tweaks show-extensions-notice
+org.gnome.desktop.input-sources mru-sources
+org.gnome.desktop.input-sources sources
+org.gnome.gthumb.browser sidebar-sections
+org.gnome.gthumb.browser startup-location
+org.gnome.gthumb.browser maximized
+org.yorba.shotwell.preferences.window direct-height
+org.yorba.shotwell.preferences.window direct-width
+org.gnome.gthumb.general active-extensions
+org.gnome.calculator window-position
+org.gnome.Cheese photo-x-resolution
+org.gnome.Cheese photo-y-resolution
+org.gnome.Cheese video-x-resolution
+org.gnome.Cheese video-y-resolution
+org.gnome.Cheese camera
+org.gnome.evolution-data-server migrated
+org.gnome.ControlCenter last-panel
+org.gnome.eog.view background-color
+org.gnome.gthumb.data-migration catalogs-2-10
+org.gnome.Geary migrated-config
+org.gnome.gedit.plugins.filebrowser root
+org.gnome.gedit.plugins.filebrowser virtual-root
+org.gnome.desktop.notifications application-children
+org.gnome.Evince.Default window-ratio
+org.gtk.Settings.FileChooser sidebar-width
+org.gtk.Settings.FileChooser window-position
+org.gtk.Settings.FileChooser window-size
+org.gnome.gedit.state.window side-panel-active-page
+org.gnome.gedit.state.window size
+org.gnome.gedit.state.window state
+org.gnome.gedit.plugins active-plugins
+org.gnome.shell command-history
+org.gnome.shell favorite-apps
+org.gnome.shell had-bluetooth-devices-setup
+org.gnome.shell enabled-extensions
+org.gnome.shell welcome-dialog-last-shown-version
+org.gnome.desktop.background secondary-color
+org.gnome.desktop.background picture-uri
+org.gnome.desktop.background primary-color
+org.gnome.desktop.interface gtk-im-module
+org.gnome.desktop.screensaver picture-uri
+org.gnome.desktop.screensaver primary-color
+org.gnome.desktop.screensaver secondary-color
+org.gnome.libgnomekbd.preview width
+org.gnome.libgnomekbd.preview y
+org.gnome.libgnomekbd.preview height
+org.gnome.libgnomekbd.preview x
+org.gnome.nautilus.window-state sidebar-width
+org.gnome.nautilus.window-state initial-size
+org.gnome.shell.weather locations
+org.gnome.shell.weather automatic-location
+org.gtk.Settings.ColorChooser custom-colors
+org.gtk.Settings.ColorChooser selected-color
+org.gnome.FileRoller.Listing show-path
+org.gnome.DejaDup prompt-check
+org.gnome.DejaDup backend
+org.gnome.shell.extensions.unite extend-left-box
+org.gnome.Weather locations
+ca.desrt.dconf-editor.Settings saved-pathbar-path
+ca.desrt.dconf-editor.Settings saved-view
+'''.strip().rstrip().split('\n')
+
+def main(ignore=False):
+    clean_env = os.environ.copy()
+    clean_env["XDG_CONFIG_HOME"] = "/nonexistent"
+    default_entries = check_output(
+        ['gsettings', 'list-recursively'], env=clean_env
+    ).decode('utf-8').split('\n')
+    entries = check_output(
+        ['gsettings', 'list-recursively']).decode('utf-8').split('\n')
+    diff = [i for i in entries if i not in default_entries]
+    if ignore:
+        diff = [i for i in diff if not any([i.startswith(j) for j in ignore_list])]
+    diff = '\n'.join(diff)
+    print(diff)
+
+if __name__ == '__main__':
+    pser = argparse.ArgumentParser()
+    pser.add_argument('--ignore', action='store_true',
+        help="Ignore information that I don't care")
+    args = vars(pser.parse_args())
+    main(**args)
