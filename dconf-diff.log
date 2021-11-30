@@ -1,0 +1,17 @@
+org.gnome.desktop.privacy remember-recent-files false
+org.gnome.desktop.wm.keybindings switch-windows-backward ['<Shift><Super>Tab', '<Shift><Alt>Tab']
+org.gnome.desktop.wm.keybindings switch-windows ['<Super>Tab', '<Alt>Tab']
+org.gnome.desktop.wm.keybindings switch-applications @as []
+org.gnome.desktop.wm.keybindings switch-applications-backward @as []
+org.gnome.desktop.peripherals.touchpad disable-while-typing false
+org.gnome.desktop.peripherals.touchpad speed 0.625
+org.gnome.shell.extensions.x11gestures swipe-fingers 4
+org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+org.gnome.settings-daemon.plugins.color night-light-enabled false
+org.gtk.Settings.FileChooser show-hidden true
+org.gtk.Settings.FileChooser clock-format '12h'
+org.gnome.gedit.preferences.editor editor-font 'Noto Sans Mono CJK TC 13'
+org.gnome.desktop.interface show-battery-percentage true
+org.gnome.desktop.interface clock-format '12h'
+org.gnome.Terminal.Legacy.Keybindings prev-tab '<Control><Shift>Tab'
+org.gnome.Terminal.Legacy.Keybindings next-tab '<Control>Tab'
