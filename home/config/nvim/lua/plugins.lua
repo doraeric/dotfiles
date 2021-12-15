@@ -29,8 +29,16 @@ return packer.startup(function()
     use({
         'vim-airline/vim-airline',
         -- FIXME enable powerline?
+        -- The color is not correct if you didn't call
+        -- `colorscheme gruvbox` after loading the plugin
+        -- maybe it's because ctermbg=NONE
         setup=[=[ vim.cmd [[
         let g:airline_powerline_fonts = 1
+        ]] ]=],
+        config=[=[ vim.cmd [[
+        let g:gruvbox_transparent_bg = 1
+        colorscheme gruvbox
+        highlight Normal ctermbg=NONE guibg=NONE
         ]] ]=],
         cond=true,
     })
