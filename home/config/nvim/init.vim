@@ -1,72 +1,26 @@
-"dein Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
-endif
+" Plugin manager - packer
+" Common commands:
+" - PackerSync
+lua require('plugins')
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
+" End of plugin manager
 
-" Install dein
-if (!isdirectory(expand('$XDG_CONFIG_HOME/nvim/dein/repos/github.com/Shougo/dein.vim')))
-  call system('git clone https://github.com/Shougo/dein.vim $XDG_CONFIG_HOME/nvim/dein/repos/github.com/Shougo/dein.vim')
-endif
+" set wildmode=longest,list,full
+" set wildmenu
+set wildmode=longest:full,full
 
-set runtimepath+=$XDG_CONFIG_HOME/nvim/dein/repos/github.com/Shougo/dein.vim
-if dein#load_state(expand('$XDG_CONFIG_HOME/nvim/dein'))
-  call dein#begin(expand('$XDG_CONFIG_HOME/nvim/dein'))
-  call dein#add(expand('$XDG_CONFIG_HOME/nvim/dein/repos/github.com/Shougo/dein.vim'))
+" Incremental search
+" Vim has good native incremental search function now, no plugin is needed
+" https://vimhelp.org/cmdline.txt.html#c_CTRL-G
+" https://www.reddit.com/r/vim/comments/hyxo4u/usefulness_of_ctrlg_and_ctrlt_while_searching/
+set wildcharm=<C-z>
+cnoremap <expr> <Tab>   getcmdtype() =~ '[\/?]' ? "<C-g>" : "<C-z>"
+cnoremap <expr> <S-Tab> getcmdtype() =~ '[\/?]' ? "<C-t>" : "<S-Tab>"
 
-  " Add or remove your plugins here like this:
-  " call dein#add('Shougo/neosnippet.vim')
-  call dein#add('wsdjeg/dein-ui.vim')
-  call dein#add('nanotech/jellybeans.vim', {'hook_add': "colo jellybeans | let g:jellybeans_overrides = {'background': { 'ctermbg': 'none', '256ctermbg': 'none' }}"})
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('bling/vim-bufferline', {'hook_add': "let g:bufferline_echo=0"})
-  call dein#add('christoomey/vim-tmux-navigator')
-  call dein#add('tpope/vim-surround')
-  call dein#add('godlygeek/tabular')
-  call dein#add('haya14busa/incsearch.vim')
-  call dein#add('scrooloose/nerdtree', {'hook_add': 'map <C-n> :NERDTreeToggle<CR>'})
-  call dein#add('qpkorr/vim-bufkill')
-  call dein#add('SirVer/ultisnips', {'hook_add': 'let g:UltiSnipsExpandTrigger="<C-j>"|let g:UltiSnipsJumpForwardTrigger="<c-b>"|let g:UltiSnipsJumpBackwardTrigger="<c-z>"'})
-  call dein#add('honza/vim-snippets')
-  " YouCompleteMe
-  " sudo apt install build-essential cmake python3-dev
-  " cd $XDG_CONFIG_HOME/nvim/dein/repos/github.com/Valloric/YouCompleteMe && python3 install.py --clang-completer
-  " call dein#add('Valloric/YouCompleteMe', {'build': 'python3 install.py --clang-completer', 'hook_add': 'let g:ycm_server_python_interpreter=system("printf `command -v python3`")'})
-  " call dein#add('wakatime/vim-wakatime', {'hook_add': 'let $WAKATIME_HOME = $XDG_CONFIG_HOME."/wakatime"', 'build': 'mkdir -p "$XDG_CONFIG_HOME/wakatime"'})
-  " web plugins
-  " call dein#add('pangloss/vim-javascript')
-  " call dein#add('mxw/vim-jsx') " strange auto re indent behaviour when insert to js file
-  " call dein#add('posva/vim-vue')
-  " call dein#add('mattn/emmet-vim')
-  " call dein#add('othree/html5.vim')
-  " test environment
-  " call dein#add('guns/xterm-color-table.vim') " :XtermColorTable
-  " call dein#add('vim-syntastic/syntastic')
-  call dein#add('google/vim-maktaba', {'merged' : 0})
-  call dein#add('google/vim-codefmt', {'merged' : 0})
-  call dein#add('google/vim-glaive', {'merged' : 0})
-
-  " Required:
-  call dein#end()
-  call dein#save_state()
-endif
-" common functions
-" call dein#build()
-" call dein#install()
-" https://github.com/Shougo/dein.vim/issues/71
-" call dein#recache_runtimepath()
-" DeinUpdate
-call glaive#Install()
-
-" Required:
-filetype plugin indent on
-syntax enable
-
-" If you want to install not installed plugins on startup.
-"if dein#check_install()
-"  call dein#install()
-"endif
-
-"End dein Scripts-------------------------
+" old settings
 let g:loaded_python_provider = 1
 
 map <C-j> <C-w>j
@@ -125,13 +79,10 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 " let g:ycm_semantic_triggers = { 'c': [ 're!\w{3}' ], 'cpp': [ 're!\w{3}' ] }
 
 " neovim wiki says t_Co has no effect, but :let &t_Co=8 do change the variable
-" Plugin 'haya14busa/incsearch.vim'
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
 au BufNewFile,BufRead *.mjs set filetype=javascript
 autocmd FileType html,javascript,javascript.jsx setlocal ts=2 sts=2 sw=2
-cmap ebig5 e ++enc=big5
+" cmap ebig5 e ++enc=big5
+command Ebig5 e ++enc=big5
 let g:is_posix=1
 
 " c++ https://stackoverflow.com/questions/28217118/vim-indents-c-c-functions-badly-when-the-type-and-name-are-in-different-lines
@@ -160,4 +111,4 @@ augroup autoformat_settings
 augroup END
 " use google style for clang-format
 " call :FormatCode when editing
-Glaive codefmt clang_format_style='google'
+" Glaive codefmt clang_format_style='google'
