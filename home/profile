@@ -25,6 +25,11 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+# set default editor for command line
+# https://unix.stackexchange.com/questions/73484/how-can-i-set-vi-as-my-default-editor-in-unix
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # if running bash
 # https://stackoverflow.com/questions/820517/bashrc-at-ssh-login
 # http://mywiki.wooledge.org/DotFiles
@@ -87,7 +92,8 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
-# python, ipython, jupyter
+# python, ipython, jupyter, virtualenvwrapper
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonstartup.py"
 export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
