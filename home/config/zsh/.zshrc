@@ -13,6 +13,14 @@ if [[ ! -e "$XDG_CACHE_HOME/zsh" ]]; then mkdir "$XDG_CACHE_HOME/zsh"; fi
 ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$HOST-$ZSH_VERSION"
 setopt HIST_IGNORE_SPACE
 
+# Fix buggy paste behaviour in quotes
+# oh-my-zsh enables auto escaping characters for urls, but it's buggy in quotes
+# To make it work correctly, either disable bracketed-paste-magic or
+# use backward-extend-paste
+# https://stackoverflow.com/questions/25614613/#answer-25622864 in comments
+# https://github.com/zsh-users/zsh/blob/master/Functions/Zle/bracketed-paste-magic
+zstyle :bracketed-paste-magic paste-init backward-extend-paste
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
