@@ -11,6 +11,7 @@ HISTFILE="${XDG_STATE_HOME:-$XDG_DATA_HOME}/zsh/history"
 if [[ ! -e "$(dirname $HISTFILE)" ]]; then mkdir "$(dirname $HISTFILE)"; fi
 if [[ ! -e "$XDG_CACHE_HOME/zsh" ]]; then mkdir "$XDG_CACHE_HOME/zsh"; fi
 ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$HOST-$ZSH_VERSION"
+setopt HIST_IGNORE_SPACE
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
