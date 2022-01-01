@@ -20,6 +20,21 @@ set wildcharm=<C-z>
 cnoremap <expr> <Tab>   getcmdtype() =~ '[\/?]' ? "<C-g>" : "<C-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[\/?]' ? "<C-t>" : "<S-Tab>"
 
+" Edit file with sudo
+" https://vi.stackexchange.com/questions/3561/settings-and-plugins-when-root-sudo-vim
+" `sudo vim` won't load plugins
+" To edit root files with plugins, choose one of the methods:
+" - `sudo -e file`
+" - `sudoedit file`
+" - `vim file` and save with :Sw, not working for neovim
+" command! -nargs=0 Sw w !sudo tee % > /dev/null
+
+" Tab navigation mapping
+" https://superuser.com/questions/410982
+" https://vim.fandom.com/wiki/Alternative_tab_navigation
+nnoremap H gT
+nnoremap L gt
+
 " old settings
 let g:loaded_python_provider = 1
 
