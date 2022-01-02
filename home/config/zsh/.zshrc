@@ -205,4 +205,6 @@ fi
 # default git LESS:
 # export LESS="-FRX"
 
-if [ -f ~/.zshrc.local ]; then source ~/.zshrc.local; fi
+ZSHRC_LOCAL="${ZDOTDIR:-$HOME}/.zshrc.local"
+if [ -f "$ZSHRC_LOCAL" ]; then source "$ZSHRC_LOCAL"; fi
+unset ZSHRC_LOCAL
