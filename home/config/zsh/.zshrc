@@ -100,6 +100,21 @@ if command -v cargo &> /dev/null; then plugins+=(cargo); fi
 # zsh-syntax-highlighting must be at the end
 plugins+=(zsh-syntax-highlighting)
 
+# Fix slow paste behaviour because of zsh-syntax-highlighting
+# - press any key (e.g. right arrow) to give up highlighting
+# - following setting should fix the slowness
+# https://github.com/zsh-users/zsh-syntax-highlighting/issues/513
+# https://gist.github.com/magicdude4eva/2d4748f8ef3e6bf7b1591964c201c1ab
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
