@@ -95,11 +95,10 @@ plugins=(
   docker-compose
 )
 if command -v rustc &> /dev/null; then plugins+=(rust); fi
-if command -v rustup &> /dev/null; then plugins+=(rustup); fi
-if command -v cargo &> /dev/null; then plugins+=(cargo); fi
 # zsh-syntax-highlighting must be at the end
 plugins+=(zsh-syntax-highlighting)
 
+# [plugins.zsh-syntax-highlighting]
 # Fix slow paste behaviour because of zsh-syntax-highlighting
 # - press any key (e.g. right arrow) to give up highlighting
 # - following setting should fix the slowness
@@ -114,6 +113,13 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
+# [plugins.docker]
+# Enable docker option-stacking, so `docker run -it` can work
+# It causes side effects, see:
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/docker/README.md
+zstyle ':completion:*:*:docker:*' option-stacking yes
+zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
 source $ZSH/oh-my-zsh.sh
 
