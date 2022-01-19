@@ -92,11 +92,12 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
-# python, ipython, jupyter, virtualenvwrapper
+# python, ipython, jupyter, virtualenvwrapper, pyenv
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonstartup.py"
 export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 
 # golang
 export GOPATH="$XDG_DATA_HOME/go"
