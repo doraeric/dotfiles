@@ -69,7 +69,7 @@ if [ -e "$CARGO_HOME/env" ]; then
 fi
 
 # node js relative path
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$XDG_DATA_HOME/yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # firefox
 # pixel scrolling
