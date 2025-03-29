@@ -50,6 +50,13 @@ return packer.startup(function()
         ]] ]=],
         cond=true,
     })
+    use({
+        'jistr/vim-nerdtree-tabs',
+        -- config=[=[ vim.cmd [[
+        -- map <C-n> <plug>NERDTreeTabsToggle<CR>
+        -- ]] ]=],
+        cond=true,
+    })
     -- YouCompleteMe
     -- let g:ycm_server_python_interpreter=system("printf `command -v python3`")
     use({
@@ -58,16 +65,57 @@ return packer.startup(function()
         run='./install.py --clangd-completer --rust-completer',
     })
     use({
+        'davidhalter/jedi-vim',
+        cond=true,
+    })
+    use({
+        'ervandew/supertab',
+        cond=true,
+        config=[=[ vim.g["SuperTabDefaultCompletionType"] = "<c-n>" ]=]
+    })
+    use({
+        'python-mode/python-mode',
+        ft = 'python',
+        -- config=[=[ vim.g["pymode_folding"] = 1 ]=]
+    })
+    use({
+        'nvim-treesitter/nvim-treesitter',
+        cond=true,
+        run = ':TSUpdate',
+    })
+    use({
         'jiangmiao/auto-pairs',
         cond=true,
     })
     use({
+        'lambdalisue/suda.vim',
+        -- cmd={'SudaRead', 'SudaWrite', 'Sw'},
+        config=[=[ vim.cmd [[
+        command! -nargs=? -complete=file Sw SudaWrite
+        ]] ]=],
+    })
+    use({
         'wakatime/vim-wakatime',
-        -- cond=true,
+        cond=true,
+    })
+    use({
+        'junegunn/fzf',
+        cond=true,
+    })
+    use({
+        'junegunn/fzf.vim',
+        cond=true,
+    })
+    use({
+        'christoomey/vim-tmux-navigator',
+        cond=true,
+    })
+    use({
+        'tpope/vim-sleuth',
+        cond=true,
     })
     --[[ Need time to check the old settings
     --  call dein#add('bling/vim-bufferline', {'hook_add': "let g:bufferline_echo=0"})
-    --  call dein#add('christoomey/vim-tmux-navigator')
     --  call dein#add('tpope/vim-surround')
     --  call dein#add('godlygeek/tabular')
     -- call dein#add('qpkorr/vim-bufkill')
