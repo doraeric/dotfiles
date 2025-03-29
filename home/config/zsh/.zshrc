@@ -219,6 +219,16 @@ elif [[ -e /etc/profile.d/vte-2.91.sh ]]; then
   source /etc/profile.d/vte-2.91.sh
 fi
 
+# yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 # oh-my-zsh change LESS in  ~/.oh-my-zsh/lib/misc.zsh
 # https://stackoverflow.com/questions/37187501
 # above less version 530, use "-R" is fine
