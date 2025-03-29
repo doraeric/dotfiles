@@ -8,8 +8,9 @@ augroup packer_user_config
 augroup end
 " End of plugin manager
 
-" set wildmode=longest,list,full
-" set wildmenu
+" show candidates when in command mode and pressing tab for auto complete
+set wildmode=longest,list,full
+set wildmenu
 set wildmode=longest:full,full
 
 " Incremental search
@@ -123,6 +124,7 @@ augroup autoformat_settings
   endif
   autocmd Filetype c,cpp setlocal ts=2 sw=2 expandtab
   " autocmd FileType python AutoFormatBuffer yapf
+  autocmd Filetype python setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
 augroup END
 " use google style for clang-format
 " call :FormatCode when editing
