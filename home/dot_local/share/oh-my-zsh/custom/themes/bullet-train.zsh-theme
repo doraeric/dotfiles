@@ -30,6 +30,7 @@ if [ ! -n "${BULLETTRAIN_PROMPT_ORDER+1}" ]; then
     nvm
     aws
     go
+    rust
     elixir
     git
     hg
@@ -139,6 +140,17 @@ if [ ! -n "${BULLETTRAIN_GO_PREFIX+1}" ]; then
   BULLETTRAIN_GO_PREFIX="go"
 fi
 
+# Rust
+if [ ! -n "${BULLETTRAIN_RUST_BG+1}" ]; then
+  BULLETTRAIN_RUST_BG=black
+fi
+if [ ! -n "${BULLETTRAIN_RUST_FG+1}" ]; then
+  BULLETTRAIN_RUST_FG=white
+fi
+if [ ! -n "${BULLETTRAIN_RUST_PREFIX+1}" ]; then
+  BULLETTRAIN_RUST_PREFIX="🦀"
+fi
+
 # Kubernetes Context
 if [ ! -n "${BULLETTRAIN_KCTX_BG+1}" ]; then
   BULLETTRAIN_KCTX_BG=yellow
@@ -148,6 +160,15 @@ if [ ! -n "${BULLETTRAIN_KCTX_FG+1}" ]; then
 fi
 if [ ! -n "${BULLETTRAIN_KCTX_PREFIX+1}" ]; then
   BULLETTRAIN_KCTX_PREFIX="⎈"
+fi
+if [ ! -n "${BULLETTRAIN_KCTX_KCONFIG+1}" ]; then
+  BULLETTRAIN_KCTX_KCONFIG="${HOME}/.kube/config"
+fi
+if [ ! -n "${BULLETTRAIN_KCTX_KUBECTL+1}" ]; then
+  BULLETTRAIN_KCTX_KUBECTL="true"
+fi
+if [ ! -n "${BULLETTRAIN_KCTX_NAMESPACE+1}" ]; then
+  BULLETTRAIN_KCTX_NAMESPACE="true"
 fi
 
 # ELIXIR
@@ -524,20 +545,30 @@ prompt_go() {
   setopt extended_glob
   if [[ (-f *.go(#qN) || -d Godeps || -f glide.yaml) ]]; then
     if command -v go > /dev/null 2>&1; then
-      prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG $BULLETTRAIN_GO_PREFIX" $(go version | grep --colour=never -oE '[[:digit:]].[[:digit:]]')"
+      prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG $BULLETTRAIN_GO_PREFIX" $(go version | grep --colour=never -oE '[[:digit:]].[[:digit:]]+')"
+    fi
+  fi
+}
+
+# Rust
+prompt_rust() {
+  if [[ (-f Cargo.toml) ]]; then
+    if command -v rustc > /dev/null 2>&1; then
+      prompt_segment $BULLETTRAIN_RUST_BG $BULLETTRAIN_RUST_FG $BULLETTRAIN_RUST_PREFIX" $(rustc -V version | cut -d' ' -f2)"
     fi
   fi
 }
 
 # Kubernetes Context
 prompt_kctx() {
-  if [[ ! -n $BULLETTRAIN_KCTX_KCONFIG ]]; then
-    return
-  fi
-  if command -v kubectl > /dev/null 2>&1; then
-    if [[ -f $BULLETTRAIN_KCTX_KCONFIG ]]; then
-      prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(cat $BULLETTRAIN_KCTX_KCONFIG|grep current-context| awk '{print $2}')"
-    fi  
+  if [[ "$BULLETTRAIN_KCTX_KUBECTL" == "true" ]] && command -v kubectl > /dev/null 2>&1; then
+    local jsonpath='{.current-context}'
+    if [[ "$BULLETTRAIN_KCTX_NAMESPACE" == "true" ]]; then
+      jsonpath="${jsonpath}{':'}{..namespace}"
+    fi
+    prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(kubectl config view --minify --output "jsonpath=${jsonpath}" 2>/dev/null)"
+  elif [[ -f $BULLETTRAIN_KCTX_KCONFIG ]]; then
+    prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(cat $BULLETTRAIN_KCTX_KCONFIG | grep current-context | awk '{print $2}')"
   fi
 }
 
@@ -547,7 +578,9 @@ prompt_virtualenv() {
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
     prompt_segment $BULLETTRAIN_VIRTUALENV_BG $BULLETTRAIN_VIRTUALENV_FG $BULLETTRAIN_VIRTUALENV_PREFIX" $(basename $virtualenv_path)"
   elif which pyenv &> /dev/null; then
-    prompt_segment $BULLETTRAIN_VIRTUALENV_BG $BULLETTRAIN_VIRTUALENV_FG $BULLETTRAIN_VIRTUALENV_PREFIX" $(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')"
+    if [[ "$(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')" != "system" ]]; then
+      prompt_segment $BULLETTRAIN_VIRTUALENV_BG $BULLETTRAIN_VIRTUALENV_FG $BULLETTRAIN_VIRTUALENV_PREFIX" $(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')"
+    fi
   fi
 }
 
@@ -556,7 +589,7 @@ prompt_nvm() {
   local nvm_prompt
   if type nvm >/dev/null 2>&1; then
     nvm_prompt=$(nvm current 2>/dev/null)
-    [[ "${nvm_prompt}x" == "x" ]] && return
+    [[ "${nvm_prompt}x" == "x" || "${nvm_prompt}" == "system" ]] && return
   elif type node >/dev/null 2>&1; then
     nvm_prompt="$(node --version)"
   else
