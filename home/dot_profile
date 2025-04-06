@@ -12,8 +12,14 @@
 # cannot install new shells to system. Change the default shell from .profile
 # I think some software work according to /etc/passwd because changing
 # $SHELL doesn't work as expect
-PROFILE_SHELL=
-if [ -x "$PROFILE_SHELL" -a "${PROFILE_SHELL_CHECKED:=FALSE}" = "FALSE" ]; then
+if [ -e "$HOME/.config/profile_shell" ]; then
+    source "$HOME/.config/profile_shell"
+fi
+
+# Set PROFILE_SHELL to empty string if it is not set
+# https://unix.stackexchange.com/a/25434
+: "${PROFILE_SHELL:=}"
+if [ -x "$PROFILE_SHELL" ] && [ "${PROFILE_SHELL_CHECKED:=FALSE}" = "FALSE" ]; then
     export SHELL=$PROFILE_SHELL
     PROFILE_SHELL_CHECKED=TRUE exec $PROFILE_SHELL -l
 fi
