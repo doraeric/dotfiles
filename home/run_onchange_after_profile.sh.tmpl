@@ -1,0 +1,9 @@
+#!/bin/bash
+# profile hash: {{ include (joinPath .chezmoi.homeDir ".profile") | sha256sum }}
+# Spawn a new shell with updated environment variables after `chezmoi apply`
+# https://unix.stackexchange.com/a/352320
+shell=$(getent passwd "$USER" | awk -F: '{print $NF}')
+echo "Spawning new shell with updated environment variables: $shell"
+echo "User programs may be installed to different path based on the environment"
+echo "So it's better to logout and login again"
+exec "$shell" -i -l
